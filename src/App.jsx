@@ -1,10 +1,15 @@
 import "./App.css";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
-    <>
-      <h1 className="text-5xl font-bold text-red-500">Tailwind jalan 🚀</h1>
-    </>
+    <div>
+      <Header />
+      <AppRoutes />
+      <Footer />
+    </div>
   );
 }
 
