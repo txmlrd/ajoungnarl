@@ -8,3 +8,25 @@
 body {
   font-family: var(--font-merriweather);
 }
+
+@layer utilities {
+  .debug {
+    @apply outline-2 outline-red-500;
+  }
+
+  .debug1 {
+    @apply outline-2 outline-blue-500;
+  }
+
+  .debug2 {
+    @apply outline-2 outline-green-500;
+  }
+
+  .debug3 {
+    @apply outline-2 outline-yellow-500;
+  }
+
+  .debug4 {
+    @apply outline-2 outline-purple-500;
+  }
+}

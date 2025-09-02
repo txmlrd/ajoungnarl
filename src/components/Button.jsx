@@ -1,9 +1,7 @@
-import React from "react";
-
-const Button = () => {
+const Button = ({ text, className }) => {
   return (
     <div className="flex justify-center">
-      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Click Me</button>
+      <button className={`px-[20px] py-[8px] outline-1 outline-black hover:bg-[#BCBCBC] transition-all ${className}`}>{text}</button>
     </div>
   );
 };

@@ -7,7 +7,10 @@ function App() {
   return (
     <div>
       <Header />
-      <AppRoutes />
+      <div className="lg:mx-30 mx-10">
+        <AppRoutes />
+      </div>
+
       <Footer />
     </div>
   );

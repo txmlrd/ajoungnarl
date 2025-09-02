@@ -3,7 +3,7 @@ import TopHome from "../components/HomePage/TopHome";
 
 const Home = () => {
   return (
-    <div>
+    <div className="flex flex-col ">
       <TopHome />
     </div>
   );

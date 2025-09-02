@@ -5,21 +5,25 @@ import { useState } from "react";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="top-0 sticky z-50">
-      <div className={`flex flex-row justify-between shadow-sm items-center text-black px-10 py-5 transition-all  ${isOpen ? "backdrop-blur-none bg-white" : "backdrop-blur-sm"}`}>
-        <p className="hidden md:flex">Sun, 31 August 2025</p>
-        <h1 className="font-cormorant text-2xl md:text-[48px] font-bold">ajoungnarl</h1>
-        <Link to="/signin" className="hover:underline transition-all duration-200 hidden md:block">
-          Sign in
-        </Link>
-        <div className="md:hidden">
-          <Hamburger toggled={isOpen} toggle={setIsOpen} />
+    <div className="top-0 sticky z-[60]">
+      <div className={`flex flex-row justify-between shadow-sm items-center text-black  py-5 transition-all  ${isOpen ? "backdrop-blur-none bg-white" : "backdrop-blur-sm"}`}>
+        <div className="grid lg:grid-cols-3 grid-cols-2 gap-2 w-full items-center justify-items-center lg:mx-30 mx-10 ">
+          <p className="hidden lg:flex">Sun, 31 August 2025</p>
+          <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold">ajoungnarl</h1>
+          <Link to="/signin" className="hover:underline transition-all duration-200 hidden lg:block">
+            Sign in
+          </Link>
+          <div className="lg:hidden">
+            <Hamburger toggled={isOpen} toggle={setIsOpen} />
+          </div>
         </div>
       </div>
       <div
-        className={`h-screen w-full bg-white shadow-lg p-5 items-center justify-between flex flex-col
-        transform transition-transform duration-300 ease-in-out  md:hidden gap-5 
-        ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`absolute top-0 left-0 h-screen w-full bg-white shadow-lg p-5 
+  flex flex-col items-center justify-between gap-5
+  transform transition-transform duration-300 ease-in-out
+  lg:hidden z-50
+  ${isOpen ? "translate-x-0 opacity-100 pointer-events-auto" : "-translate-x-full opacity-0 pointer-events-none"}`}
       >
         <Link to="/signin" className="flex text-center justify-center items-center py-2 text-lg underline transition-all duration-200" onClick={() => setIsOpen(false)}>
           Sign in
