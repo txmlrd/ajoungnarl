@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import TopHome from "../components/HomePage/TopHome";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <div>
+      <TopHome />
+    </div>
+  );
+};
 
-export default Home
+export default Home;
