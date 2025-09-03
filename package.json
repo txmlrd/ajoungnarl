@@ -12,8 +12,10 @@
   "dependencies": {
     "@fontsource/cormorant-garamond": "^5.2.9",
     "@fontsource/merriweather": "^5.2.9",
+    "@lottiefiles/dotlottie-react": "^0.15.2",
     "antd": "^5.27.1",
     "hamburger-react": "^2.5.2",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.542.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

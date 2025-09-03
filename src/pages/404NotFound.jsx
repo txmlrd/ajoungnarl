@@ -1,14 +1,10 @@
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import Button from "../components/Button";
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center h-[80vh]">
-      <h1 className="text-6xl font-bold text-red-600">404</h1>
-      <p className="text-lg mt-4">Halaman tidak ditemukan</p>
-      <a 
-        href="/" 
-        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-      >
-        Kembali ke Home
-      </a>
+    <div className="flex flex-col items-center justify-center lg:h-[80vh] h-[100vh]">
+      <DotLottieReact src="https://lottie.host/5a5f4dd2-8f5b-44a2-b1aa-aba5ef4f7b1e/rhTS8UCZka.lottie" loop autoplay />
+      <Button text={"Back to Home"} path={"/"} />
     </div>
   );
 }
