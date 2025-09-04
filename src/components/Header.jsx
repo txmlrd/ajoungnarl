@@ -23,11 +23,19 @@ const Header = () => {
   flex flex-col items-center justify-between gap-5
   transform transition-transform duration-300 ease-in-out
   lg:hidden z-50
-  ${isOpen ? "translate-x-0 opacity-100 pointer-events-auto" : "-translate-x-full opacity-0 pointer-events-none"}`}
+  ${isOpen ? "translate-x-0  pointer-events-auto" : "-translate-x-full  pointer-events-none"}`}
       >
-        <Link to="/signin" className="flex text-center justify-center items-center py-2 text-lg underline transition-all duration-200" onClick={() => setIsOpen(false)}>
-          Sign in
-        </Link>
+        <div className={`flex flex-col gap-5 w-full transition-all  ${isOpen ? "opacity-100" : "opacity-0"}`}>
+          <div className={`flex justify-between items-center transition-all`}>
+            <h1 className={`font-cormorant text-2xl font-bold lg:hidden block `}>ajoungnarl</h1>
+            <Hamburger toggled={isOpen} toggle={setIsOpen} />
+          </div>
+
+          <Link to="/signin" className="flex text-center justify-center items-center py-2 text-lg underline transition-all duration-200" onClick={() => setIsOpen(false)}>
+            Sign in
+          </Link>
+        </div>
+
         <p className="flex justify-center items-center">Sun, 31 August 2025</p>
       </div>
     </div>
