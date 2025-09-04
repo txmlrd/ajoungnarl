@@ -9,7 +9,10 @@ const Header = () => {
       <div className={`flex flex-row justify-between shadow-sm items-center text-black  py-5 transition-all  ${isOpen ? "backdrop-blur-none bg-white" : "backdrop-blur-sm"}`}>
         <div className="grid lg:grid-cols-3 grid-cols-2 gap-2 w-full items-center justify-items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="hidden lg:flex">Sun, 31 August 2025</p>
-          <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold">ajoungnarl</h1>
+          <Link to="/">
+            <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer">ajoungnarl</h1>
+          </Link>
+
           <Link to="/signin" className="hover:underline transition-all duration-200 hidden lg:block">
             Sign in
           </Link>
