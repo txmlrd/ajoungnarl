@@ -1,16 +1,15 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import NotFound from "../pages/404NotFound";
-import Signin from "../components/Signin/Signin";
+import { lazyLoad } from "../helper/LazyLoad";
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/signin" element={<Signin />} />
+      <Route path="/" element={lazyLoad(() => import("../pages/Home"))} />
+      <Route path="/signin" element={lazyLoad(() => import("../components/Signin/Signin"))} />
+      <Route path="/signup" element={lazyLoad(() => import("../components/Signup/Signup"))} />
 
       {/* Catch all unregistered routes */}
-      <Route path="*" element={<NotFound />} />
+      <Route path="*" element={lazyLoad(() => import("../pages/404NotFound"))} />
     </Routes>
   );
 }
