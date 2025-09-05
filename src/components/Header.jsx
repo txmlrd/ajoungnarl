@@ -1,21 +1,53 @@
 import { Link } from "react-router-dom";
 import { Rotate as Hamburger } from "hamburger-react";
 import { useState } from "react";
-
+import { auth } from "../lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState as useLocalState } from "react";
+import CurrentDate from "./CurrentDate";
+import { signOut } from "firebase/auth";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useLocalState(null);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out");
+      // redirect misal ke home / signin
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div className="top-0 sticky z-[60]">
       <div className={`flex flex-row justify-between shadow-sm items-center text-black  py-5 transition-all  ${isOpen ? "backdrop-blur-none bg-white" : "backdrop-blur-sm"}`}>
         <div className="grid lg:grid-cols-3 grid-cols-2 gap-2 w-full items-center justify-items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="hidden lg:flex">Sun, 31 August 2025</p>
+          <div className=" lg:block hidden">
+            <CurrentDate />
+          </div>
           <Link to="/">
             <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer">ajoungnarl</h1>
           </Link>
+          <div className="flex justify-end items-center gap-5 w-full">
+            <Link to={user ? "/" : "/signin"} className="hover:underline transition-all duration-200 hidden lg:block">
+              {user ? `Hi, ${user.email}` : "Sign in"}
+            </Link>
+            {user ? (
+              <button onClick={handleLogout} className="hover:underline transition-all duration-200 hidden lg:block">
+                Sign out
+              </button>
+            ) : null}{" "}
+          </div>
 
-          <Link to="/signin" className="hover:underline transition-all duration-200 hidden lg:block">
-            Sign in
-          </Link>
           <div className="lg:hidden">
             <Hamburger toggled={isOpen} toggle={setIsOpen} />
           </div>
@@ -34,12 +66,12 @@ const Header = () => {
             <Hamburger toggled={isOpen} toggle={setIsOpen} />
           </div>
 
-          <Link to="/signin" className="flex text-center justify-center items-center py-2 text-lg underline transition-all duration-200" onClick={() => setIsOpen(false)}>
-            Sign in
+          <Link to={user ? "/" : "/signin"} className="flex text-center justify-center items-center py-2 text-lg hover:underline transition-all duration-200" onClick={() => setIsOpen(false)}>
+            {user ? `Hi, ${user.email}` : "Sign in"}
           </Link>
         </div>
 
-        <p className="flex justify-center items-center">Sun, 31 August 2025</p>
+        <CurrentDate />
       </div>
     </div>
   );
