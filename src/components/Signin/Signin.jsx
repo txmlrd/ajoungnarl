@@ -6,6 +6,8 @@ import { auth } from "../../lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Alert } from "antd";
+import { useAlert } from "../../context/AlertContext";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -13,17 +15,17 @@ const Signin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { showAlert } = useAlert();
+
   const handleSignin = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log("User signed in:", userCredential.user);
+      await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
-      alert(`Login berhasil: ${userCredential.user.email}`);
+      showAlert("Sign in successful!", "success");
     } catch (err) {
-      alert("Login gagal: " + err.message);
-      console.error(err);
+      showAlert("Sign in failed: " + err.message, "error");
     } finally {
       setLoading(false);
     }

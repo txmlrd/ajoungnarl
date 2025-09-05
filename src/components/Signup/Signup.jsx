@@ -15,13 +15,11 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("User signed up:", userCredential.user);
+      await createUserWithEmailAndPassword(auth, email, password);
       navigate("/signin");
-      alert(`Register berhasil: ${userCredential.user.email}`);
+      alert(`Register berhasil: ${email}`);
     } catch (err) {
       alert("Register gagal, silakan coba lagi. : " + err.message);
-      console.error("Error signing up:", err);
     } finally {
       setLoading(false);
     }
