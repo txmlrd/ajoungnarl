@@ -19,7 +19,7 @@ const Signin = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("User signed in:", userCredential.user);
-      navigate("/"); // redirect ke dashboard
+      navigate("/");
       alert(`Login berhasil: ${userCredential.user.email}`);
     } catch (err) {
       alert("Login gagal: " + err.message);
@@ -37,7 +37,7 @@ const Signin = () => {
           <Form placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} />
         </div>
 
-        <Button onClick={handleSignin} text={"Sign In"} wFull className={"bg-black text-white hover:text-black lg:w-96 w-full"} />
+        <Button onClick={handleSignin} text={loading ? "Signing in..." : "Sign in"} wFull className={"bg-black text-white hover:text-black lg:w-96 w-full"} />
       </div>
       <h1 className="my-2">or</h1>
 

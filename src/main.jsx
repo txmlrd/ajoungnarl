@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
-
+import { ReactLenis } from "lenis/react";
 // Fontsource imports
 import "@fontsource/cormorant-garamond";
 import "@fontsource/cormorant-garamond/600.css";
@@ -16,7 +16,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <ReactLenis root>
+          <App />
+        </ReactLenis>
       </AuthProvider>
     </BrowserRouter>
   </StrictMode>
