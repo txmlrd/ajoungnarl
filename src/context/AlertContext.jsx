@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useRef } from "react";
 import { Alert } from "antd";
 
 const AlertContext = createContext();
@@ -6,17 +6,41 @@ const AlertContext = createContext();
 export const useAlert = () => useContext(AlertContext);
 
 export const AlertProvider = ({ children }) => {
-  const [alert, setAlert] = useState({ message: "", type: "success", showIcon: true, closable: true });
+  const [alert, setAlert] = useState({
+    message: "",
+    type: "success",
+    showIcon: true,
+    closable: true,
+  });
   const [visible, setVisible] = useState(false);
 
-  const showAlert = (message, type = "success") => {
-    setAlert({ message, type, showIcon: true, closable: true });
-    setVisible(false); // reset dulu
-    setTimeout(() => setVisible(true), 10); // trigger fade in
-    setTimeout(() => setVisible(false), 5000); // auto-hide
-  };
+  // simpan timeout biar bisa di-clear
+  const timeoutRef = useRef([]);
 
-  const handleClose = () => setVisible(false);
+  const clearAllTimeouts = () => {
+    timeoutRef.current.forEach((id) => clearTimeout(id));
+    timeoutRef.current = [];
+  };
+  const showAlert = (message, type = "success") => {
+    clearAllTimeouts();
+
+    setAlert({ message, type, showIcon: true, closable: true });
+    setVisible(false);
+
+    timeoutRef.current.push(setTimeout(() => setVisible(true), 10));
+
+    timeoutRef.current.push(
+      setTimeout(() => {
+        setVisible(false);
+        setAlert((prev) => ({ ...prev, message: "" }));
+      }, 5000)
+    );
+  };
+  const handleClose = () => {
+    clearAllTimeouts();
+    setVisible(false);
+    setAlert((prev) => ({ ...prev, message: "" }));
+  };
 
   return (
     <AlertContext.Provider value={{ showAlert }}>

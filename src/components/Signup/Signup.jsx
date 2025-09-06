@@ -4,26 +4,32 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
+import { useAlert } from "../../context/AlertContext";
+import { firebaseErrorMessages } from "../../lib/firebaseErrorMessage";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       navigate("/signin");
-      alert(`Register berhasil: ${email}`);
+      showAlert(`Register success: ${email}`, "success");
     } catch (err) {
-      alert("Register gagal, silakan coba lagi. : " + err.message);
+      const message = firebaseErrorMessages[err.code] || "Register failed, please try again.";
+      showAlert(message, "error");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="lg:h-[70vh] h-[80vh] flex flex-col justify-center items-center w-full">
       <h1 className="font-cormorant font-bold lg:text-5xl text-3xl text-center">Create an account</h1>

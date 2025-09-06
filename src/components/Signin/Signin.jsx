@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Alert } from "antd";
 import { useAlert } from "../../context/AlertContext";
+import { firebaseErrorMessages } from "../../lib/firebaseErrorMessage";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -25,7 +26,8 @@ const Signin = () => {
       navigate("/");
       showAlert("Sign in successful!", "success");
     } catch (err) {
-      showAlert("Sign in failed: " + err.message, "error");
+      const message = firebaseErrorMessages[err.code] || "Sign in failed, please try again.";
+      showAlert(message, "error");
     } finally {
       setLoading(false);
     }
