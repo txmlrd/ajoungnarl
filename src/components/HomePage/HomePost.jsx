@@ -11,13 +11,13 @@ const HomePost = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-10">
       {posts.map((post) => (
         <div key={post.id} className="flex lg:flex-row flex-col gap-5">
-          <div className="rounded-sm outline-1 outline-black lg:h-[150px] h-[250px] lg:w-[500px] w-full">
-            <img src={post.image}  className="w-full h-full object-cover rounded-sm" />
+          <div className="rounded-sm outline-1 outline-black lg:h-[150px] h-[250px] lg:w-[200px] w-full flex-shrink-0">
+            <img src={post.image} className="w-full h-full object-cover rounded-sm" />
           </div>
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between ">
             {post.tags.map((tag) => (
               <PostCategory key={tag} text={tag} />
             ))}
