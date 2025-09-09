@@ -2,6 +2,8 @@ import { User, Clock, Calendar, MessageSquare } from "lucide-react";
 import TagButton from "../TagButton";
 
 const TopPost = ({ post }) => {
+ const totalComments = post.comments ? post.comments.length : 0;
+
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-2 justify-center">
@@ -27,7 +29,7 @@ const TopPost = ({ post }) => {
           </div>
           <div className="flex flex-row gap-1 items-center">
             <MessageSquare />
-            <p className="text-[14px]">1000</p>
+            <p className="text-[14px]">{totalComments}</p>
           </div>
         </div>
         <div className="w-full h-[187px] my-5">

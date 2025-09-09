@@ -9,6 +9,7 @@ import NotFound from "./404NotFound";
 const DetailPost = () => {
   const { id } = useParams();
   const { posts, loading } = usePosts();
+  console.log(posts);
 
   if (loading) return <LoadingFallback />;
   const post = posts.find((p) => p.id === id);
@@ -16,7 +17,7 @@ const DetailPost = () => {
   return (
     <div className="flex flex-col gap-5 max-w-[500px] mx-auto my-10">
       <TopPost post={post} />
-      <Comments />
+      <Comments post={post} />
       <OtherNews />
     </div>
   );
