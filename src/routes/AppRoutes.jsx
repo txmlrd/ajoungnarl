@@ -1,10 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import { lazyLoad } from "../helper/LazyLoad";
+import ScrollToTop from "../helper/ScrollToTop";
 
 export default function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={lazyLoad(() => import("../pages/Home"))} />
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={lazyLoad(() => import("../pages/Home"))} />
       <Route path="/signin" element={lazyLoad(() => import("../components/Signin/Signin"))} />
       <Route path="/signup" element={lazyLoad(() => import("../components/Signup/Signup"))} />
       <Route path="/news/:id" element={lazyLoad(() => import("../pages/DetailPost"))} />
@@ -12,5 +15,6 @@ export default function AppRoutes() {
       {/* Catch all unregistered routes */}
       <Route path="*" element={lazyLoad(() => import("../pages/404NotFound"))} />
     </Routes>
+    </>
   );
 }

@@ -17,7 +17,15 @@ const HomePost = () => {
         <Link to={`/news/${post.id}`} key={post.id} className="no-underline text-black">
           <div key={post.id} className="flex lg:flex-row flex-col gap-5 group">
             <div className="rounded-sm outline-1 outline-black lg:h-[150px] h-[250px] lg:w-[200px] w-full flex-shrink-0 overflow-hidden">
-              <img src={post.image} className="w-full h-full object-cover rounded-sm group-hover:scale-105 transition-all" />
+              <img
+                onError={(e) => {
+                  e.currentTarget.onerror = null; // cegah loop
+                  e.currentTarget.src = "/image-not-found.png"; // fallback
+                }}
+                src={post?.image || "/image-not-found.png"}
+                alt="thumbnail"
+                className="w-full h-full object-cover rounded-sm group-hover:scale-105 transition-all"
+              />
             </div>
             <div className="flex flex-col justify-between ">
               {post.tags.map((tag) => (
