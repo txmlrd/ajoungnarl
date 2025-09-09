@@ -28,9 +28,12 @@ const HomePost = () => {
               />
             </div>
             <div className="flex flex-col justify-between ">
-              {post.tags.map((tag) => (
-                <PostCategory key={tag} text={tag} />
-              ))}
+              <div className="flex flex-wrap gap-2 mb-2">
+                {post.tags.map((tag) => (
+                  <PostCategory key={tag} text={tag} />
+                ))}
+              </div>
+
               <div>
                 <h1 className="font-cormorant text-[24px] font-bold group-hover:underline">{post.title}</h1>
                 <p className="text-[14px] tracking-wide line-clamp-2">{post.content}</p>

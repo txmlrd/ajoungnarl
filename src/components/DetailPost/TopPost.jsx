@@ -2,7 +2,7 @@ import { User, Clock, Calendar, MessageSquare } from "lucide-react";
 import TagButton from "../TagButton";
 
 const TopPost = ({ post }) => {
- const totalComments = post.comments ? post.comments.length : 0;
+  const totalComments = post.comments ? post.comments.length : 0;
 
   return (
     <div className="flex flex-col gap-3">
@@ -33,7 +33,14 @@ const TopPost = ({ post }) => {
           </div>
         </div>
         <div className="w-full h-[187px] my-5">
-          <img src={post.image} className="w-full h-full object-cover" />
+          <img
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "/image-not-found.png";
+            }}
+            src={post.image || "/image-not-found.png"}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         <p>{post.content}</p>
