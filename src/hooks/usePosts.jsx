@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { db } from "../lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
 
@@ -6,52 +6,56 @@ export function usePosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        setLoading(true);
+  // bikin reusable function
+  const fetchPosts = useCallback(async () => {
+    try {
+      setLoading(true);
 
-        // Ambil semua posts
-        const postsSnap = await getDocs(collection(db, "posts"));
-        // Ambil semua tags
-        const tagsSnap = await getDocs(collection(db, "tags"));
-        // Convert tags jadi object { id: name }
-        const tags = {};
-        tagsSnap.forEach((doc) => {
-          tags[doc.id] = doc.data().name;
-        });
+      // Ambil semua posts
+      const postsSnap = await getDocs(collection(db, "posts"));
+      // Ambil semua tags
+      const tagsSnap = await getDocs(collection(db, "tags"));
 
-        // Mapping tagIds ke tagName
-        const postsData = await Promise.all(
-          postsSnap.docs.map(async (docSnap) => {
-            const data = docSnap.data();
+      // Convert tags jadi object { id: name }
+      const tags = {};
+      tagsSnap.forEach((doc) => {
+        tags[doc.id] = doc.data().name;
+      });
 
-            // ambil comments subcollection
-            const commentsSnap = await getDocs(collection(db, "posts", docSnap.id, "comments"));
+      // Mapping tagIds ke tagName + ambil comments
+      const postsData = await Promise.all(
+        postsSnap.docs.map(async (docSnap) => {
+          const data = docSnap.data();
 
-            const comments = commentsSnap.docs.map((c) => ({
-              id: c.id,
-              ...c.data(),
-            }));
+          const commentsSnap = await getDocs(collection(db, "posts", docSnap.id, "comments"));
 
-            return {
-              id: docSnap.id,
-              ...data,
-              tags: data.tagIds?.map((id) => tags[id] || id) || [],
-              comments,
-            };
-          })
-        );
-        setPosts(postsData);
-      } catch (err) {
-        console.error("Error fetching posts:", err);
-      } finally {
-        setLoading(false);
-      }
+          const comments = commentsSnap.docs.map((c) => ({
+            id: c.id,
+            ...c.data(),
+          }));
+
+          return {
+            id: docSnap.id,
+            ...data,
+            tags: data.tagIds?.map((id) => tags[id] || id) || [],
+            comments,
+          };
+        })
+      );
+
+      setPosts(postsData);
+    } catch (err) {
+      console.error("Error fetching posts:", err);
+    } finally {
+      setLoading(false);
     }
-
-    fetchPosts();
   }, []);
 
-  return { posts, loading };
+  // otomatis jalan sekali di awal
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  // return fetchPosts juga
+  return { posts, loading, fetchPosts };
 }

@@ -8,7 +8,7 @@ import NotFound from "./404NotFound";
 
 const DetailPost = () => {
   const { id } = useParams();
-  const { posts, loading } = usePosts();
+  const { posts, loading, fetchPosts } = usePosts();
   console.log(posts);
 
   if (loading) return <LoadingFallback />;
@@ -17,8 +17,8 @@ const DetailPost = () => {
   return (
     <div className="flex flex-col gap-5 max-w-[500px] mx-auto my-10">
       <TopPost post={post} />
-      <Comments post={post} />
-      <OtherNews />
+      <Comments post={post} onCommentAdded={fetchPosts} />
+      <OtherNews posts={posts} currentPostId={post.id} />
     </div>
   );
 };
