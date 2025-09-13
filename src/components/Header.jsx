@@ -96,7 +96,7 @@ const Header = () => {
             <h1 className={`font-cormorant text-2xl font-bold lg:hidden block `}>ajoungnarl</h1>
             <Hamburger toggled={isMenuOpen} toggle={setIsMenuOpen} />
           </div>
-          <Link to={user ? "/" : "/signin"} className="flex text-center justify-center items-center py-2 text-lg hover:underline transition-all duration-200" onClick={() => setIsMenuOpen(false)}>
+          <Link to={user ? "/profile" : "/signin"} className="flex text-center justify-center items-center py-2 text-lg hover:underline transition-all duration-200" onClick={() => setIsMenuOpen(false)}>
             {user ? `Hi, ${user.email}` : "Sign in"}
           </Link>
           {user ? (
