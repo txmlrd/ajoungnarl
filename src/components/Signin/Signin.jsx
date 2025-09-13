@@ -45,7 +45,7 @@ const Signin = () => {
       </div>
       <h1 className="my-2">or</h1>
 
-      <Button text={"Sign in with Google"} wFull withGoogle className={"bg-black text-white hover:text-black lg:w-96 w-full"} />
+      <Button path={""} disabled text={"Sign in with Google"} wFull withGoogle className={"bg-black text-white hover:text-black lg:w-96 w-full cursor-not-allowed "} />
       <p className="mt-4 text-sm">
         Don't have an account?{" "}
         <Link to="/signup" className="underline font-bold">
