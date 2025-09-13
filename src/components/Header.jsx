@@ -69,7 +69,7 @@ const Header = () => {
             <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer">ajoungnarl</h1>
           </Link>
           <div className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex">
-            <Link to={user ? "/" : "/signin"} className="hover:underline transition-all duration-200 ">
+            <Link to={user ? "/profile" : "/signin"} className="hover:underline transition-all duration-200 ">
               {user ? `Hi, ${user.email}` : "Sign in"}
             </Link>
             {user ? (

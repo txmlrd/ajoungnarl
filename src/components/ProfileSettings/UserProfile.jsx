@@ -1,11 +1,33 @@
-import { SquarePen } from "lucide-react";
+import { SquarePen, Copy } from "lucide-react";
 import ImageCrop from "./ImageCrop";
 import { useState, useRef } from "react";
+import { useAlert } from "../../context/AlertContext";
+import Form from "../Form";
+import Button from "../Button";
+import { Popover } from "antd";
 
 const UserProfile = () => {
   const [isCropOpen, setIsCropOpen] = useState(false);
-  const [profilePic, setProfilePic] = useState("/path/to/profile/picture"); // default foto
+  const [profilePic, setProfilePic] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [id] = useState("UQl8sGhIalVcuvSMLNGF2Pi9oR82");
+  const { showAlert } = useAlert();
+
+  // Social media & personal info states
+  const [instagram, setInstagram] = useState("");
+  const [linkedin, setLinkedIn] = useState("");
+  const [tiktok, setTikTok] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const handleCopyID = () => {
+    if (id) {
+      navigator.clipboard.writeText(id);
+      showAlert("Success Copying ID to Clipboard", "success");
+    } else {
+      showAlert("Failed Copying ID to Clipboard", "error");
+    }
+  };
 
   const fileInputRef = useRef(null);
 
@@ -22,6 +44,15 @@ const UserProfile = () => {
     }
   };
 
+  const popUpContent = (
+    <div className="font-merriweather text-[15px]">
+      <h1 className="font-bold mb-2">Membership Status</h1>
+      <p>This is a free member account.</p>
+      <p>Upgrade to premium for more features!</p>
+      <Button path={""} text={"Upgrade Now"} wFull className={"bg-black text-white hover:text-black mt-2"} />
+    </div>
+  );
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-col items-center gap-3">
@@ -35,7 +66,15 @@ const UserProfile = () => {
           </div>
 
           {/* Foto profil */}
-          <img src={profilePic} alt="Profile" className="w-24 h-24 rounded-full bg-green-200 object-cover" />
+          <img
+            src={profilePic || "/image-not-found.png"}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/image-not-found.png";
+            }}
+            alt="Profile"
+            className="w-24 h-24 rounded-full  object-cover border-2 border-black"
+          />
         </div>
 
         {/* Hidden input file */}
@@ -57,6 +96,34 @@ const UserProfile = () => {
         )}
 
         <p className="text-center text-sm text-gray-500">*Click your profile picture to remove or change picture</p>
+        <Popover content={popUpContent} trigger="hover" placement="bottom" autoAdjustOverflow>
+          <h1 className="text-center text-xl font-semibold underline cursor-pointer">Free Member</h1>
+        </Popover>
+
+        <div className="flex flex-col lg:flex-row gap-2 items-center text-center">
+          <p>Account ID : {id}</p>
+          <Copy className="w-4 h-4 cursor-pointer hover:text-gray-500 transition-all" onClick={handleCopyID} />
+        </div>
+
+        <div className="flex flex-col text-center text-[12px] black">
+          <p>
+            Your account created at <span className="font-bold">Sep 15, 2025, 12.05 AM.</span>
+          </p>
+          <p>
+            Last updated at <span className="font-bold">Sep 15, 2025, 12.05 AM.</span>
+          </p>
+        </div>
+        <div className="flex flex-col lg:w-96 w-full justify-center items-center ">
+          <Form placeholder="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+          <Form placeholder="Phone Number" type="number" value={phone} onChange={(e) => setPhone(e.target.value)} />
+        </div>
+        <div className="flex flex-col lg:w-96 w-full justify-center items-center ">
+          <h1 className="text-lg font-semibold w-full">Social Media</h1>
+          <Form placeholder="Username" type="text" text="Instagram" value={instagram} onChange={(e) => setInstagram(e.target.value)} />
+          <Form placeholder="Username" type="text" text="LinkedIn" value={linkedin} onChange={(e) => setLinkedIn(e.target.value)} />
+          <Form placeholder="Username" type="text" text="TikTok" value={tiktok} onChange={(e) => setTikTok(e.target.value)} />
+        </div>
+        <Button text={"Save Changes"} wFull className={"bg-black text-white hover:text-black lg:w-96 w-full"} />
       </div>
     </div>
   );
