@@ -6,6 +6,8 @@ import { auth } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../context/AlertContext";
 import { firebaseErrorMessages } from "../../lib/firebaseErrorMessage";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../lib/firebase"; // pastikan db dari getFirestore
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +21,16 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Simpan data user ke Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        createdAt: new Date(),
+        role : "free-member",
+      });
+
       navigate("/signin");
       showAlert(`Register success: ${email}`, "success");
     } catch (err) {

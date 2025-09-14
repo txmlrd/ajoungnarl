@@ -13,7 +13,7 @@ import { useEffect } from "react";
 
 const UserProfile = () => {
   //fetch user profile data
-  const { profile: userProfile, loading, fetchProfile, updateProfile, updateSocialMedia } = useUserProfile();
+  const { profile: userProfile, fetchProfile, loading, updateProfile, updateSocialMedia } = useUserProfile();
   const handleUpdateProfile = async () => {
     try {
       await updateProfile({ name, phoneNumber: phone });
@@ -93,7 +93,7 @@ const UserProfile = () => {
     return date.toLocaleString("en-US", options);
   }
 
-  if (loading) return <LoadingFallback />;
+  // if (loading) return <LoadingFallback />;
   if (!userProfile) return <NotFound />;
   // Set idUser when userProfile is loaded
 
@@ -186,7 +186,7 @@ const UserProfile = () => {
           <Form placeholder="Username" type="text" text="LinkedIn" value={linkedin} onChange={(e) => setLinkedIn(e.target.value)} />
           <Form placeholder="Username" type="text" text="TikTok" value={tiktok} onChange={(e) => setTikTok(e.target.value)} />
         </div>
-        <Button onClick={handleUpdateProfile} text={"Save Changes"} wFull className={"bg-black text-white hover:text-black lg:w-96 w-full"} />
+        <Button onClick={handleUpdateProfile} text={loading ? "Saving..." : "Save Changes"} wFull className={"bg-black text-white hover:text-black lg:w-96 w-full"} />
       </div>
     </div>
   );
