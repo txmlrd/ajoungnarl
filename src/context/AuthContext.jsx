@@ -1,5 +1,5 @@
 // src/context/AuthContext.jsx
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
 import LoadingFallback from "../helper/LoadingFallback";
@@ -27,5 +27,12 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => signOut(auth);
 
-  return <AuthContext.Provider value={{ user, logout }}>{loading ? <LoadingFallback /> : children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, logout }}>
+      {loading ? <LoadingFallback /> : children}
+    </AuthContext.Provider>
+  );
 };
+
+// ✅ Custom hook biar gampang dipakai
+export const useAuth = () => useContext(AuthContext);

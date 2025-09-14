@@ -9,7 +9,7 @@ import NotFound from "./404NotFound";
 const DetailPost = () => {
   const { id } = useParams();
   const { posts, loading, fetchPosts } = usePosts();
-  console.log(posts);
+  // console.log(posts);
 
   if (loading) return <LoadingFallback />;
   const post = posts.find((p) => p.id === id);

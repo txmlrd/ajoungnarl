@@ -9,8 +9,10 @@ import { signOut } from "firebase/auth";
 import { useAlert } from "../context/AlertContext";
 import { Modal } from "antd";
 import Button from "./Button";
+import { useUserProfile } from "../hooks/useUserProfile";
 
 const Header = () => {
+  const { profile } = useUserProfile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useLocalState(null);
   const { showAlert } = useAlert();
@@ -69,8 +71,15 @@ const Header = () => {
             <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer">ajoungnarl</h1>
           </Link>
           <div className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex">
-            <Link to={user ? "/profile" : "/signin"} className="hover:underline transition-all duration-200 ">
-              {user ? `Hi, ${user.email}` : "Sign in"}
+            <Link to={user ? "/profile" : "/signin"} className="hover:underline transition-all duration-200">
+              {user ? (
+                <>
+                  Welcome,&nbsp;
+                  <span className="font-bold">{profile?.name}</span>
+                </>
+              ) : (
+                "Sign in"
+              )}
             </Link>
             {user ? (
               <button onClick={showModal} className="hover:underline cursor-pointer transition-all duration-200 ">
@@ -97,7 +106,14 @@ const Header = () => {
             <Hamburger toggled={isMenuOpen} toggle={setIsMenuOpen} />
           </div>
           <Link to={user ? "/profile" : "/signin"} className="flex text-center justify-center items-center py-2 text-lg hover:underline transition-all duration-200" onClick={() => setIsMenuOpen(false)}>
-            {user ? `Hi, ${user.email}` : "Sign in"}
+            {user ? (
+              <>
+                Welcome,&nbsp;
+                <span className="font-bold">{profile?.name}</span>
+              </>
+            ) : (
+              "Sign in"
+            )}
           </Link>
           {user ? (
             <button onClick={showModal} className="hover:underline cursor-pointer transition-all duration-200 ">
