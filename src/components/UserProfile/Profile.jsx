@@ -92,12 +92,13 @@ const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage }) =
         <h1 className="font-cormorant font-bold lg:text-4xl text-2xl">Latest from {profile.name}</h1>
 
         {loadingPosts ? <Spin /> : posts?.map((post) => <LatestUserPost key={post.id} post={post} />)}
+        {!posts?.length && !loadingPosts && <p className="text-start text-gray-500">{profile.name} has no posts yet.</p>}
       </div>
-      <div>
+      {posts?.length > 0 && (
         <div className="flex justify-center pt-5">
           <Pagination current={currentPage} pageSize={3} total={totalPosts} onChange={(page) => setCurrentPage(page)} />
         </div>
-      </div>
+      )}
     </div>
   );
 };
