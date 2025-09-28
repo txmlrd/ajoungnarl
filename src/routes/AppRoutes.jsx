@@ -13,6 +13,8 @@ export default function AppRoutes() {
       <Route path="/news/:id" element={lazyLoad(() => import("../pages/DetailPost"))} />
       <Route path="/setting-profile" element={lazyLoad(() => import("../pages/SettingProfile"))} />
       <Route path="/profile/:userSlug" element={lazyLoad(() => import("../pages/UserProfile"))} />
+      <Route path="/add-post" element={lazyLoad(() => import("../pages/AddPost"))} />
+
 
       {/* Catch all unregistered routes */}
       <Route path="*" element={lazyLoad(() => import("../pages/404NotFound"))} />
