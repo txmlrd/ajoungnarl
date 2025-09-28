@@ -48,7 +48,7 @@ const TopPost = ({ post }) => {
           />
         </div>
 
-        <p>{post.content}</p>
+        <p dangerouslySetInnerHTML={{ __html: post.content }} />
         <div className="flex flex-wrap gap-2 mt-2">
           <TagButton text={"#UI/UX"} />
           <TagButton text={"#WebDevelopment"} />
