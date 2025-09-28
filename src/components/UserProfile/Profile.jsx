@@ -14,10 +14,14 @@ const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage }) =
   const userId = profile?.id;
   const [currentPage, setCurrentPage] = useState(1);
   const [openPhotoModal, setOpenPhotoModal] = useState(false);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    fetchPostsPage(false);
+  };
 
   useEffect(() => {
     setCurrentPage(1);
-    fetchPostsPage(1);
+    fetchPostsPage(true);
   }, [userId, fetchPostsPage]);
 
   return (
@@ -96,7 +100,7 @@ const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage }) =
       </div>
       {posts?.length > 0 && (
         <div className="flex justify-center pt-5">
-          <Pagination current={currentPage} pageSize={3} total={totalPosts} onChange={(page) => setCurrentPage(page)} />
+          <Pagination current={currentPage} pageSize={3} total={totalPosts} onChange={() => handlePageChange()} />
         </div>
       )}
     </div>

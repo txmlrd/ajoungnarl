@@ -1,6 +1,7 @@
 import { User, Clock, Calendar, MessageSquare } from "lucide-react";
 import TagButton from "../TagButton";
 import { timeAgo } from "../../function/timeAgo";
+import { Link } from "react-router-dom";
 
 const TopPost = ({ post }) => {
   const totalComments = post.comments ? post.comments.length : 0;
@@ -10,10 +11,12 @@ const TopPost = ({ post }) => {
       <div className="flex flex-col gap-2 justify-center">
         <h1 className="text-5xl font-cormorant font-bold text-center">{post.title}</h1>
         <div className="flex flex-wrap items-center flex-row justify-center w-full lg:gap-4 gap-3 mt-2 ">
-          <div className="flex flex-row gap-1 items-center">
-            <User />
-            <p className="text-[14px]">{post.author}</p>
-          </div>
+          <Link to={`/profile/${post.userSlug}`} className="text-[14px] tracking-wide line-clamp-2 hover:underline">
+            <div className="flex flex-row gap-1 items-center">
+              <User />
+              <p className="text-[14px]">{post.author}</p>
+            </div>
+          </Link>
           <div className="flex flex-row gap-1 items-center">
             <Clock />
             <p className="text-[14px]">{post.readTime} min read</p>

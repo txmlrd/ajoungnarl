@@ -42,7 +42,12 @@ const HomePost = () => {
               <div className="flex flex-row lg:gap-4 gap-3 mt-2">
                 <div className="flex flex-row gap-1 items-center">
                   <User />
-                  <p className="text-[14px]">{post.author}</p>
+                  <Link
+                    to={`/profile/${post.userSlug}`} // menuju halaman profil user
+                    className="text-[14px] hover:underline"
+                  >
+                    {post.author}
+                  </Link>
                 </div>
                 <div className="flex flex-row gap-1 items-center">
                   <Clock />

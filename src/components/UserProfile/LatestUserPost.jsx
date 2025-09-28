@@ -32,7 +32,7 @@ const LatestUserPost = ({ post }) => {
         </div>
 
         <div className="flex flex-row lg:gap-2 gap-1 mt-2">
-          <Link to={`/profile/${post.idAuthor}`} className="text-[14px] tracking-wide line-clamp-2 hover:underline">
+          <Link to={`/profile/${post.userSlug}`} className="text-[14px] tracking-wide line-clamp-2 hover:underline">
             <div className="flex flex-row gap-1 items-center">
               <User />
               <p className="text-[14px]">{post.author}</p>

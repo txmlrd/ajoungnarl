@@ -24,10 +24,14 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
           setUserId(snap.docs[0].id);
         } else {
           setUserId(null);
+          setProfile(null);
         }
       } catch (err) {
         console.error("Error fetch userId by slug", err);
         setUserId(null);
+        setProfile(null);
+      } finally {
+        setLoadingProfile(false);
       }
     };
 

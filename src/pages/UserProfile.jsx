@@ -7,12 +7,12 @@ import { useUserProfileWithPosts } from "../hooks/useUserProfileWithPosts";
 
 const UserProfile = () => {
   const { userSlug } = useParams();
-  const { profile, posts, totalPosts, loadingProfile, loadingPosts, fetchPostsPage } = useUserProfileWithPosts({ userSlug: userSlug, postsPerPage: 3 });
+  const { profile, posts, totalPosts, loadingProfile, loadingPosts, fetchPostsPage, page, setPage } = useUserProfileWithPosts({ userSlug, postsPerPage: 3 }); 
   if (loadingProfile) return <LoadingFallback />;
   if (!profile) return <NotFound />;
   return (
     <>
-      <Profile profile={profile} posts={posts} totalPosts={totalPosts} loadingPosts={loadingPosts} fetchPostsPage={fetchPostsPage} />
+      <Profile profile={profile} posts={posts} totalPosts={totalPosts} loadingPosts={loadingPosts} fetchPostsPage={fetchPostsPage} page={page} setPage={setPage} postsPerPage={3} />
     </>
   );
 };
