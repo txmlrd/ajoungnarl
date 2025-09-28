@@ -71,7 +71,7 @@ const Header = () => {
             <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer">ajoungnarl</h1>
           </Link>
           <div className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex">
-            <Link to={user ? "/profile" : "/signin"} className="hover:underline transition-all duration-200">
+            <Link to={user ? "/setting-profile" : "/signin"} className="hover:underline transition-all duration-200">
               {user ? (
                 <>
                   Welcome,&nbsp;
@@ -105,7 +105,7 @@ const Header = () => {
             <h1 className={`font-cormorant text-2xl font-bold lg:hidden block `}>ajoungnarl</h1>
             <Hamburger toggled={isMenuOpen} toggle={setIsMenuOpen} />
           </div>
-          <Link to={user ? "/profile" : "/signin"} className="flex text-center justify-center items-center py-2 text-lg hover:underline transition-all duration-200" onClick={() => setIsMenuOpen(false)}>
+          <Link to={user ? "/setting-profile" : "/signin"} className="flex text-center justify-center items-center py-2 text-lg hover:underline transition-all duration-200" onClick={() => setIsMenuOpen(false)}>
             {user ? (
               <>
                 Welcome,&nbsp;

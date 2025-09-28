@@ -11,8 +11,9 @@ export default function AppRoutes() {
       <Route path="/signin" element={lazyLoad(() => import("../components/Signin/Signin"))} />
       <Route path="/signup" element={lazyLoad(() => import("../components/Signup/Signup"))} />
       <Route path="/news/:id" element={lazyLoad(() => import("../pages/DetailPost"))} />
-      <Route path="/profile" element={lazyLoad(() => import("../pages/Profile"))} />
-      
+      <Route path="/setting-profile" element={lazyLoad(() => import("../pages/SettingProfile"))} />
+      <Route path="/profile/:userSlug" element={lazyLoad(() => import("../pages/UserProfile"))} />
+
       {/* Catch all unregistered routes */}
       <Route path="*" element={lazyLoad(() => import("../pages/404NotFound"))} />
     </Routes>

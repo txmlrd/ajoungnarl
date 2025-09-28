@@ -1,5 +1,6 @@
 import { User, Clock, Calendar, MessageSquare } from "lucide-react";
 import TagButton from "../TagButton";
+import { timeAgo } from "../../function/timeAgo";
 
 const TopPost = ({ post }) => {
   const totalComments = post.comments ? post.comments.length : 0;
@@ -20,11 +21,12 @@ const TopPost = ({ post }) => {
           <div className="flex flex-row gap-1 items-center">
             <Calendar />
             <p className="text-[14px]">
-              {post.createdAt?.toDate().toLocaleDateString("en-US", {
+              {/* {post.createdAt?.toDate().toLocaleDateString("en-US", {
                 month: "short", // Mar
                 day: "numeric", // 5
                 year: "numeric", // 2025
-              })}
+              })} */}
+              {timeAgo(post.createdAt)}
             </p>
           </div>
           <div className="flex flex-row gap-1 items-center">

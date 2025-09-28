@@ -3,6 +3,7 @@ import { Alert } from "antd";
 
 const AlertContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAlert = () => useContext(AlertContext);
 
 export const AlertProvider = ({ children }) => {

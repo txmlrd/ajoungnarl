@@ -93,7 +93,7 @@ const UserProfile = () => {
     return date.toLocaleString("en-US", options);
   }
 
-  // if (loading) return <LoadingFallback />;
+  if (loading) return <LoadingFallback />;
   if (!userProfile) return <NotFound />;
   // Set idUser when userProfile is loaded
 
