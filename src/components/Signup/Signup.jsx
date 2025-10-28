@@ -8,6 +8,8 @@ import { useAlert } from "../../context/AlertContext";
 import { firebaseErrorMessages } from "../../lib/firebaseErrorMessage";
 import { collection, doc, setDoc, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase"; // pastikan db dari getFirestore
+import { Upload } from "antd";
+import ImgCrop from "antd-img-crop";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -19,6 +21,8 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [nextStep, setNextStep] = useState(false);
+
+  const [fileList, setFileList] = useState([]);
   const navigate = useNavigate();
   const { showAlert } = useAlert();
 
@@ -54,6 +58,7 @@ const Signup = () => {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await auth.signOut();
       const user = userCredential.user;
 
       // Simpan data user ke Firestore
@@ -64,6 +69,7 @@ const Signup = () => {
           phoneNumber: phoneNumber,
           createdAt: new Date(),
           role: "free-member",
+          pictureProfile: fileList[0]?.thumbUrl || "",
         });
         await setDoc(
           doc(db, "users", user.uid, "socialmedia", "default"),
@@ -89,6 +95,26 @@ const Signup = () => {
     }
   };
 
+  const onChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    const thumbUrl = fileList[0]?.thumbUrl;
+    console.log("Thumb URL:", thumbUrl);
+  };
+  const onPreview = async (file) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
   return (
     <div className="lg:h-[70vh] h-[80vh] flex flex-col justify-center items-center w-full">
       <h1 className="font-cormorant font-bold lg:text-5xl text-3xl text-center">Create an account</h1>
@@ -101,17 +127,25 @@ const Signup = () => {
           {nextStep && (
             <>
               <div className="flex flex-row gap-2">
-                <Form  placeholder="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                <Form  placeholder="Phone Number" type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                <Form placeholder="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                <Form placeholder="Phone Number" type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
               </div>
 
               <div className="flex flex-row gap-2">
-                <Form  placeholder="Instagram" type="text" value={instagram} onChange={(e) => setInstagram(e.target.value)} />
-                <Form  placeholder="LinkedIn" type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
+                <Form placeholder="Instagram" type="text" value={instagram} onChange={(e) => setInstagram(e.target.value)} />
+                <Form placeholder="LinkedIn" type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
               </div>
               <div className="flex flex-row gap-2">
-                <Form  placeholder="TikTok" type="text" value={tiktok} onChange={(e) => setTiktok(e.target.value)} />
-                <Form  placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Form placeholder="TikTok" type="text" value={tiktok} onChange={(e) => setTiktok(e.target.value)} />
+                <Form placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              </div>
+              <div className="flex flex-col gap-1 my-4 w-full justify-center items-center *:transition-all">
+                <p className="text-black text-sm font-bold items-start">Upload Profile Picture</p>
+                <ImgCrop rotationSlider>
+                  <Upload action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload" listType="picture-circle" fileList={fileList} onChange={onChange} onPreview={onPreview}>
+                    {fileList.length < 1 && "Upload Profile Picture"}
+                  </Upload>
+                </ImgCrop>
               </div>
             </>
           )}
