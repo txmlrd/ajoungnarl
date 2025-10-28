@@ -1,14 +1,14 @@
 import { User, Clock, Calendar } from "lucide-react";
 import { usePosts } from "../../hooks/usePosts";
 import { Link } from "react-router-dom";
-
+import { Skeleton } from "antd";
 import PostCategory from "../PostCategory";
 
 const HomePost = () => {
   const { posts, loading } = usePosts();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Skeleton active paragraph={{ rows: 4 }} className="w-full" />;
   }
 
   return (
