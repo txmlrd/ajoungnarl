@@ -1,7 +1,7 @@
 import Form from "../Form";
 import Button from "../Button";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../context/AlertContext";
@@ -21,6 +21,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [nextStep, setNextStep] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [fileList, setFileList] = useState([]);
   const navigate = useNavigate();
@@ -52,9 +53,44 @@ const Signup = () => {
     }
   };
 
+  const handleNullForm = () => {
+    const newErrors = {};
+    // setError(true);
+    if (!name) {
+      newErrors.name = "Name cannot be empty";
+    }
+    if (!phoneNumber) {
+      newErrors.phoneNumber = "Phone Number cannot be empty";
+    }
+    if (!password) {
+      newErrors.password = "Password cannot be empty";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    return newErrors;
+  };
+
+  const validationTrigger = async () => {
+    const validationError = handleNullForm();
+    console.log("Validation Errorsasd:", Object.keys(validationError).length);
+    if (Object.keys(validationError).length !== 0) {
+      setLoading(false);
+      setErrorMessage(validationError);
+      console.log("Validation Error:", validationError);
+      return false;
+    }
+    console.log("No Validation Errors");
+    return true;
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const isValid = await validationTrigger();
+    if (!isValid) {
+      return;
+    }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -115,6 +151,10 @@ const Signup = () => {
     imgWindow?.document.write(image.outerHTML);
   };
 
+  useEffect(() => {
+    validationTrigger();
+  }, [email, name, phoneNumber, password]);
+
   return (
     <div className="lg:h-[70vh] h-[80vh] flex flex-col justify-center items-center w-full">
       <h1 className="font-cormorant font-bold lg:text-5xl text-3xl text-center">Create an account</h1>
@@ -127,17 +167,22 @@ const Signup = () => {
           {nextStep && (
             <>
               <div className="flex flex-row gap-2">
-                <Form placeholder="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                <Form placeholder="Phone Number" type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                <div className="flex flex-col">
+                  <Form error={errorMessage.name} placeholder="Name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                </div>
+                <div className="flex flex-col">
+                  {" "}
+                  <Form error={errorMessage.phoneNumber} placeholder="Phone Number" type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                </div>
               </div>
 
               <div className="flex flex-row gap-2">
                 <Form placeholder="Instagram" type="text" value={instagram} onChange={(e) => setInstagram(e.target.value)} />
-                <Form placeholder="LinkedIn" type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
+                <Form  placeholder="LinkedIn" type="text" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
               </div>
               <div className="flex flex-row gap-2">
                 <Form placeholder="TikTok" type="text" value={tiktok} onChange={(e) => setTiktok(e.target.value)} />
-                <Form placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Form error={errorMessage.password} placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
               <div className="flex flex-col gap-1 my-4 w-full justify-center items-center *:transition-all">
                 <p className="text-black text-sm font-bold items-start">Upload Profile Picture</p>
