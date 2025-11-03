@@ -3,6 +3,7 @@ import DetailComment from "./CommentComponent/DetailComment";
 import { useState } from "react";
 import { useAddComment } from "../../hooks/useAddComment";
 import { useAlert } from "../../context/AlertContext";
+import checkUserLogin from "../../function/checkUserLogin";
 
 const Comments = ({ post, onCommentAdded }) => {
   const [text, setText] = useState("");
@@ -10,7 +11,13 @@ const Comments = ({ post, onCommentAdded }) => {
   const { showAlert } = useAlert();
 
   const handleSubmit = async () => {
-    const success = await addComment({ postId: post.id, commentText: text, user: "Anonymous" });
+    if (text.trim() === "") {
+      showAlert("Comment cannot be empty.", "error");
+      return;
+    }
+    const userComment = await checkUserLogin();
+    console.log("User logged in status in Comments:", userComment);
+    const success = await addComment({ postId: post.id, commentText: text, user: userComment.name, userSlug: userComment.userSlug });
     if (success) {
       setText("");
       onCommentAdded();

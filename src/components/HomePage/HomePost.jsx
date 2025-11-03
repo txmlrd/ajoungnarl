@@ -36,7 +36,7 @@ const HomePost = () => {
 
               <div>
                 <h1 className="font-cormorant text-[24px] font-bold group-hover:underline">{post.title}</h1>
-                <p className="text-[14px] tracking-wide line-clamp-2">{post.content}</p>
+                <p className="text-[14px] tracking-wide line-clamp-2" dangerouslySetInnerHTML={{ __html: post.content }}></p>
               </div>
 
               <div className="flex flex-row lg:gap-4 gap-3 mt-2">

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { Spin } from "antd";
 
-const Button = ({ text, className, wFull = false, path, withGoogle = false, onClick, disabled }) => {
+const Button = ({ text, className, wFull = false, path, withGoogle = false, onClick, disabled, loading }) => {
   const baseClass = `flex flex-row items-center justify-center gap-2 px-[20px] py-[8px] outline-1 outline-black hover:bg-[#BCBCBC] transition-all ${wFull ? "w-full" : ""} ${className} ${
     disabled ? "cursor-not-allowed opacity-75" : "hover:bg-[#BCBCBC] cursor-pointer"
   }`;
@@ -16,11 +17,11 @@ const Button = ({ text, className, wFull = false, path, withGoogle = false, onCl
     <div className="w-full flex justify-center">
       {path ? (
         <Link to={path} className={`justify-center items-center flex ${wFull ? "w-full" : ""}`}>
-          <button className={baseClass}>{content}</button>
+          <button className={baseClass}>{loading ? <Spin /> : <>{content}</>}</button>
         </Link>
       ) : (
         <button onClick={onClick} className={baseClass} disabled={disabled}>
-          {content}
+          {loading ? <Spin /> : <>{content}</>}
         </button>
       )}
     </div>

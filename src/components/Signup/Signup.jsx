@@ -156,7 +156,7 @@ const Signup = () => {
   }, [email, name, phoneNumber, password]);
 
   return (
-    <div className="lg:h-[70vh] h-[80vh] flex flex-col justify-center items-center w-full">
+    <div className="lg:h-[70vh] h-[80vh] flex flex-col justify-center items-center w-full my-28">
       <h1 className="font-cormorant font-bold lg:text-5xl text-3xl text-center">Create an account</h1>
       <div className="w-full flex flex-col justify-center items-center mt-5">
         <div className="flex flex-col w-full justify-center items-center">
@@ -195,7 +195,7 @@ const Signup = () => {
             </>
           )}
         </div>
-        {!nextStep && <Button onClick={() => handleCheckEmail(email)} text={"Next"} />}
+        {!nextStep && <Button loading={loading} onClick={() => handleCheckEmail(email)} text={"Next"} />}
         {nextStep && <Button onClick={handleSignup} text={loading ? "Signing up..." : "Sign up"} wFull className={"bg-black text-white hover:text-black lg:w-96 w-full"} disabled={loading} />}
       </div>
 

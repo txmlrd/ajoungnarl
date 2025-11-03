@@ -2,10 +2,11 @@ import React from "react";
 
 const DetailComment = ({ posts }) => {
   const username = truncateText(posts.user, 20);
+  const userSlug = posts.userSlug || "ajung-adhi";
   return (
     <div className="text-[14px]">
       <h1 className="font-bold">
-        {username} •{" "}
+        <a href={`/profile/${userSlug}`} className="hover:underline">{username}</a> •{" "}
         {posts.createdAt.toDate().toLocaleString("en-US", {
           month: "short", // Sep
           day: "numeric", // 9

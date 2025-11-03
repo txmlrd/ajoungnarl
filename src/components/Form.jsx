@@ -1,3 +1,4 @@
+
 const Form = ({ placeholder, type, value, onChange, disabled, text, error }) => {
   return (
     <div className="flex flex-col gap-1 my-4 w-full justify-start *:transition-all">

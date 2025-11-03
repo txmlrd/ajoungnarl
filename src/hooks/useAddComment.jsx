@@ -5,7 +5,7 @@ export function useAddComment() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const addComment = async ({ postId, commentText, user }) => {
+  const addComment = async ({ postId, commentText, user, userSlug }) => {
     if (!commentText.trim()) return false; // return false kalau kosong
 
     try {
@@ -15,8 +15,9 @@ export function useAddComment() {
       const commentsRef = collection(db, "posts", postId, "comments");
       await addDoc(commentsRef, {
         comment: commentText.trim(),
-        user: user || "Anonymous",
+        user: user,
         createdAt: serverTimestamp(),
+        userSlug: userSlug,
       });
 
       return true; // berhasil
