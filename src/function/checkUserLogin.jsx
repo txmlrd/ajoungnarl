@@ -8,7 +8,7 @@ const checkUserLogin = async () => {
   const docRef = doc(db, "users", user.uid);
   const queryUser = await getDoc(docRef);
   // console.log("Current user in Comments:", user.email);
-  // console.log("queryUser:", queryUser.data());
+  console.log("queryUser:", queryUser.data());
   return queryUser.data();
 };
 

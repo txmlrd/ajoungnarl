@@ -3,21 +3,26 @@ import DetailComment from "./CommentComponent/DetailComment";
 import { useState } from "react";
 import { useAddComment } from "../../hooks/useAddComment";
 import { useAlert } from "../../context/AlertContext";
-import checkUserLogin from "../../function/checkUserLogin";
+import { useUserProfile } from "../../hooks/useUserProfile";
 
 const Comments = ({ post, onCommentAdded }) => {
   const [text, setText] = useState("");
   const { addComment, loading } = useAddComment();
   const { showAlert } = useAlert();
+  const { profile } = useUserProfile();
+  console.log("User Profile in Comments:", profile);
 
   const handleSubmit = async () => {
     if (text.trim() === "") {
       showAlert("Comment cannot be empty.", "error");
       return;
     }
-    const userComment = await checkUserLogin();
-    console.log("User logged in status in Comments:", userComment);
-    const success = await addComment({ postId: post.id, commentText: text, user: userComment.name, userSlug: userComment.userSlug });
+
+    if (!profile) {
+      showAlert("You must be logged in to add a comment.", "error");
+      return;
+    }
+    const success = await addComment({ postId: post.id, commentText: text, user: profile.name, userSlug: profile.userSlug });
     if (success) {
       setText("");
       onCommentAdded();
@@ -36,7 +41,7 @@ const Comments = ({ post, onCommentAdded }) => {
       <div className="flex flex-col gap-2 mt-5">
         <h1 className="font-bold text-lg">Add a Comment</h1>
         <textarea value={text} onChange={(e) => setText(e.target.value)} className="w-full border-2 border-black  p-2 min-h-20" rows={4} placeholder="Write your comment here..." />
-        <button onClick={handleSubmit} disabled={loading} className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors w-fit">
+        <button onClick={handleSubmit} disabled={loading} className="bg-black text-white px-4 py-2 hover:bg-gray-600 transition-colors w-fit cursor-pointer">
           {loading ? "Submitting..." : "Submit"}
         </button>
       </div>

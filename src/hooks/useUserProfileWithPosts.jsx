@@ -16,9 +16,11 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
     if (!userSlug) return;
 
     const fetchUserId = async () => {
+      // console.log("Fetching userId for slug:", userSlug);
       try {
         const q = query(collection(db, "users"), where("userSlug", "==", userSlug));
         const snap = await getDocs(q);
+        // console.log("Fetched userId snap for slug", userSlug, snap);
 
         if (!snap.empty) {
           setUserId(snap.docs[0].id);
@@ -41,18 +43,24 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
   // Fetch profile
   useEffect(() => {
     if (!userId) return;
+    console.log("Fetching profile for userId:", userId);
 
     const fetchProfile = async () => {
       setLoadingProfile(true);
       try {
+        console.log("before fetching profile for userId:", userId);
         const ref = doc(db, "users", userId);
         const snap = await getDoc(ref);
+        console.log("Fetched profile snap for userId", userId, snap);
         if (snap.exists()) {
           let userData = { id: snap.id, ...snap.data() };
+          console.log("User data:", userData);
 
           // ambil subcollection socialMedia
+
           const socialRef = collection(db, "users", userId, "socialmedia");
           const socialSnap = await getDocs(socialRef);
+
           let socialMedia = [];
           if (!socialSnap.empty) {
             const firstDoc = socialSnap.docs[0];

@@ -7,12 +7,14 @@ import { useEffect, useState as useLocalState } from "react";
 import CurrentDate from "./CurrentDate";
 import { signOut } from "firebase/auth";
 import { useAlert } from "../context/AlertContext";
-import { Modal } from "antd";
+import { Modal, Tooltip } from "antd";
 import Button from "./Button";
 import { useUserProfile } from "../hooks/useUserProfile";
-
+import { CirclePlus } from "lucide-react";
+import checkUserLogin from "../function/checkUserLogin";
 const Header = () => {
   const { profile } = useUserProfile();
+  console.log("User Profile in Header:", profile);  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useLocalState(null);
   const { showAlert } = useAlert();
@@ -43,6 +45,9 @@ const Header = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+     
+    checkUserLogin();
+  
 
     return () => unsubscribe();
   }, []);
@@ -71,11 +76,22 @@ const Header = () => {
             <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer">ajoungnarl</h1>
           </Link>
           <div className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex">
+            {user ? (
+              <>
+                <a href="/create-post" className="flex flex-row items-center gap-1 hover:underline transition-all duration-200">
+                  <Tooltip title="Create Post">
+                    <CirclePlus />
+                  </Tooltip>
+                </a>
+              </>
+            ) : null}
             <Link to={user ? "/setting-profile" : "/signin"} className="hover:underline transition-all duration-200">
               {user ? (
                 <>
-                  Welcome,&nbsp;
-                  <span className="font-bold">{profile?.name}</span>
+                  {/* Welcome,&nbsp;
+                <span className="font-bold">{profile?.name}</span> */}
+
+                  <span className="font-bold">Profile</span>
                 </>
               ) : (
                 "Sign in"
@@ -108,8 +124,9 @@ const Header = () => {
           <Link to={user ? "/setting-profile" : "/signin"} className="flex text-center justify-center items-center py-2 text-lg hover:underline transition-all duration-200" onClick={() => setIsMenuOpen(false)}>
             {user ? (
               <>
-                Welcome,&nbsp;
-                <span className="font-bold">{profile?.name}</span>
+                {/* Welcome,&nbsp;
+                <span className="font-bold">{profile?.name}</span> */}
+                Welcome, <span className="font-bold">Profile</span>
               </>
             ) : (
               "Sign in"
