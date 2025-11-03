@@ -37,7 +37,7 @@ const Comments = ({ post, onCommentAdded }) => {
     <div className="flex flex-col gap-2 border-t-1 border-b-1 border-gray-300 py-5">
       <h1 className="font-bold text-xl">Comments</h1>
 
-      <div className="flex flex-col gap-10">{post.comments.length === 0 ? <p className="text-gray-500">No comments</p> : post.comments.map((comment) => <DetailComment key={comment.id} posts={comment} />)}</div>
+      <div className="flex flex-col gap-10">{post.comments.length === 0 ? <p className="text-gray-500">No comments</p> : post.comments.map((comment) => <DetailComment key={comment.id} posts={comment} authorSlug={post.userSlug} />)}</div>
       <div className="flex flex-col gap-2 mt-5">
         <h1 className="font-bold text-lg">Add a Comment</h1>
         <textarea value={text} onChange={(e) => setText(e.target.value)} className="w-full border-2 border-black  p-2 min-h-20" rows={4} placeholder="Write your comment here..." />

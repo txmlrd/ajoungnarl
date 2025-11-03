@@ -13,6 +13,7 @@ const DetailPost = () => {
 
   if (loading) return <LoadingFallback />;
   const post = posts.find((p) => p.id === id);
+  console.log("ASDDDDDDDDDDDDDDDDDD", post);
   if (!post) return <NotFound />;
   return (
     <div className="flex flex-col gap-5 max-w-[500px] mx-auto my-10">
