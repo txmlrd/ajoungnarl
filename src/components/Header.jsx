@@ -78,7 +78,7 @@ const Header = () => {
           <div className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex">
             {user ? (
               <>
-                <a href="/create-post" className="flex flex-row items-center gap-1 hover:underline transition-all duration-200">
+                <a href="/add-post" className="flex flex-row items-center gap-1 hover:underline transition-all duration-200">
                   <Tooltip title="Create Post">
                     <CirclePlus />
                   </Tooltip>

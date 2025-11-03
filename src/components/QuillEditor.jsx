@@ -65,7 +65,7 @@ const QuillEditor = forwardRef(
       };
     }, [ref, placeholder]);
 
-    return <div ref={containerRef} />;
+    return <div className="" ref={containerRef} />;
   }
 );
 
