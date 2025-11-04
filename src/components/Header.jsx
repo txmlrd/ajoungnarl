@@ -14,7 +14,7 @@ import { CirclePlus } from "lucide-react";
 import checkUserLogin from "../function/checkUserLogin";
 const Header = () => {
   const { profile } = useUserProfile();
-  console.log("User Profile in Header:", profile);  
+  // console.log("User Profile in Header:", profile);  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useLocalState(null);
   const { showAlert } = useAlert();

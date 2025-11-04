@@ -9,7 +9,8 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
   const [totalPosts, setTotalPosts] = useState(0);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const [lastDoc, setLastDoc] = useState(null);
+  // const [lastDoc, setLastDoc] = useState(null);
+  const [pageCursors, setPageCursors] = useState([]);
 
   // Cari userId dari slug
   useEffect(() => {
@@ -43,18 +44,18 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
   // Fetch profile
   useEffect(() => {
     if (!userId) return;
-    console.log("Fetching profile for userId:", userId);
+    // console.log("Fetching profile for userId:", userId);
 
     const fetchProfile = async () => {
       setLoadingProfile(true);
       try {
-        console.log("before fetching profile for userId:", userId);
+        // console.log("before fetching profile for userId:", userId);
         const ref = doc(db, "users", userId);
         const snap = await getDoc(ref);
-        console.log("Fetched profile snap for userId", userId, snap);
+        // console.log("Fetched profile snap for userId", userId, snap);
         if (snap.exists()) {
           let userData = { id: snap.id, ...snap.data() };
-          console.log("User data:", userData);
+          // console.log("User data:", userData);
 
           // ambil subcollection socialMedia
 
@@ -85,57 +86,61 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
 
   // Fetch posts page
   const fetchPostsPage = useCallback(
-    async (reset = false) => {
+    async (pageNum = 1) => {
       if (!userId) return;
-      console.log("reset", reset);
+      // console.log("pageNum", pageNum);
       setLoadingPosts(true);
       try {
         const ref = collection(db, "posts");
 
         let q = query(ref, where("idAuthor", "==", userId), orderBy("createdAt", "desc"), limit(postsPerPage));
 
-        if (!reset && lastDoc) {
-          q = query(ref, where("idAuthor", "==", userId), orderBy("createdAt", "desc"), startAfter(lastDoc), limit(postsPerPage));
+        if (pageNum > 1 && pageCursors[pageNum - 2]) {
+          q = query(ref, where("idAuthor", "==", userId), orderBy("createdAt", "desc"), startAfter(pageCursors[pageNum - 2]), limit(postsPerPage));
         }
 
         const snap = await getDocs(q);
         const newPosts = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-        console.log("Fetched posts snap for userId", userId, snap, newPosts);
-        let queryAll = query(ref, where("idAuthor", "==", userId));
-        const snapAll = await getDocs(queryAll);
-        console.log("Total posts snap for userId", userId, snapAll);
-        if (reset) {
-          setPosts(newPosts);
-        } else {
-          setPosts((prev) => [...prev, ...newPosts]);
-        }
-const lastDocInSnap = snap.docs[snap.docs.length - 1] || null;
-        setLastDoc(snap.docs[snap.docs.length - 1] || null);
-        console.log("Last doc in snap for userId", userId, lastDocInSnap);
+        console.log("newposts", newPosts);
+        setPosts(newPosts);
 
-        if (reset) {
-          setTotalPosts(snapAll.size);
+        const lastVisible = snap.docs[snap.docs.length - 1];
+        if (pageCursors.length < pageNum) {
+          setPageCursors((prev) => [...prev, lastVisible]);
+        }
+
+        if (totalPosts === 0) {
+          const totalQuery = query(ref, where("idAuthor", "==", userId));
+          const postTotal = await getDocs(totalQuery);
+          // console.log("postTotal", postTotal);
+          
+          const getCountFromServer = async (query) => {
+            const snapshot = await getDocs(query);
+            return { data: () => ({ count: snapshot.size }) };
+          };
+          const totalSnap = await getCountFromServer(totalQuery);
+          setTotalPosts(totalSnap.data().count);
         }
       } catch (err) {
         console.error("Error fetch posts", err);
-        if (reset) setPosts([]);
+        setPosts([]);
       } finally {
         setLoadingPosts(false);
       }
     },
-    [userId, postsPerPage]
+    [userId, pageCursors, postsPerPage, totalPosts]
   );
 
   // Auto load page pertama
   useEffect(() => {
     if (userId) {
       setPosts([]);
-      setLastDoc(null);
       fetchPostsPage(true);
     }
   }, [userId, postsPerPage, fetchPostsPage]);
 
   return {
+    setPosts,
     profile,
     posts,
     totalPosts,

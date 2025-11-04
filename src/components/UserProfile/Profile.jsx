@@ -8,22 +8,19 @@ import { Pagination, Spin, Tooltip } from "antd";
 import { useState, useEffect } from "react";
 import ImageZoomModal from "../ImageZoomModal";
 
-const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage }) => {
-  console.log("posts", posts);
-  console.log("profile in profile comp", profile);
-  console.log("totalPosts in profile comp", totalPosts);
-  const userId = profile?.id;
+const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage  }) => {
+  // console.log("posts", posts);
+  // console.log("profile in profile comp", profile);
+  // console.log("totalPosts in profile comp", totalPosts);
+  // const userId = profile?.id;
   const [currentPage, setCurrentPage] = useState(1);
   const [openPhotoModal, setOpenPhotoModal] = useState(false);
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    fetchPostsPage(false);
-  };
+
 
   useEffect(() => {
-    setCurrentPage(1);
-    fetchPostsPage(true);
-  }, [userId, fetchPostsPage]);
+    // setCurrentPage(1);
+    fetchPostsPage(currentPage);
+  }, [currentPage, fetchPostsPage]);
   
   // console.log 
 
@@ -103,7 +100,7 @@ const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage }) =
       </div>
       {posts?.length > 0 && (
         <div className="flex justify-center pt-5">
-          <Pagination current={currentPage} pageSize={3} total={totalPosts} onChange={() => handlePageChange()} />
+          <Pagination current={currentPage} pageSize={3} total={totalPosts} onChange={(p) => setCurrentPage(p)} />
         </div>
       )}
     </div>
