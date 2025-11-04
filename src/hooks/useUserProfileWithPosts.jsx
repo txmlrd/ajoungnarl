@@ -87,7 +87,7 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
   const fetchPostsPage = useCallback(
     async (reset = false) => {
       if (!userId) return;
-
+      console.log("reset", reset);
       setLoadingPosts(true);
       try {
         const ref = collection(db, "posts");
@@ -100,17 +100,21 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
 
         const snap = await getDocs(q);
         const newPosts = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-
+        console.log("Fetched posts snap for userId", userId, snap, newPosts);
+        let queryAll = query(ref, where("idAuthor", "==", userId));
+        const snapAll = await getDocs(queryAll);
+        console.log("Total posts snap for userId", userId, snapAll);
         if (reset) {
           setPosts(newPosts);
         } else {
           setPosts((prev) => [...prev, ...newPosts]);
         }
-
+const lastDocInSnap = snap.docs[snap.docs.length - 1] || null;
         setLastDoc(snap.docs[snap.docs.length - 1] || null);
+        console.log("Last doc in snap for userId", userId, lastDocInSnap);
 
         if (reset) {
-          setTotalPosts(snap.size);
+          setTotalPosts(snapAll.size);
         }
       } catch (err) {
         console.error("Error fetch posts", err);

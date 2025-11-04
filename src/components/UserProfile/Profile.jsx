@@ -11,6 +11,7 @@ import ImageZoomModal from "../ImageZoomModal";
 const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage }) => {
   console.log("posts", posts);
   console.log("profile in profile comp", profile);
+  console.log("totalPosts in profile comp", totalPosts);
   const userId = profile?.id;
   const [currentPage, setCurrentPage] = useState(1);
   const [openPhotoModal, setOpenPhotoModal] = useState(false);
@@ -23,6 +24,8 @@ const Profile = ({ profile, posts, totalPosts, loadingPosts, fetchPostsPage }) =
     setCurrentPage(1);
     fetchPostsPage(true);
   }, [userId, fetchPostsPage]);
+  
+  // console.log 
 
   return (
     <div className="flex flex-col gap-3 max-w-[500px] mx-auto my-10">
