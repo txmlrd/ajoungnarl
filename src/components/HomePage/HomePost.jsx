@@ -3,9 +3,11 @@ import { usePosts } from "../../hooks/usePosts";
 import { Link } from "react-router-dom";
 import { Skeleton } from "antd";
 import PostCategory from "../PostCategory";
+import { useNavigate } from "react-router-dom";
 
 const HomePost = () => {
   const { posts, loading } = usePosts();
+  const navigate = useNavigate();
 
   if (loading) {
     return <Skeleton active paragraph={{ rows: 4 }} className="w-full" />;
@@ -14,7 +16,7 @@ const HomePost = () => {
   return (
     <div className="flex flex-col gap-10">
       {posts.map((post) => (
-        <Link to={`/news/${post.id}`} key={post.id} className="no-underline text-black">
+        <div onClick={() => navigate(`/news/${post.id}`)} key={post.id} className="no-underline text-black">
           <div key={post.id} className="flex lg:flex-row flex-col gap-5 group">
             <div className="rounded-sm outline-1 outline-black lg:h-[150px] h-[250px] lg:w-[200px] w-full flex-shrink-0 overflow-hidden">
               <img
@@ -66,7 +68,7 @@ const HomePost = () => {
               </div>
             </div>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );
