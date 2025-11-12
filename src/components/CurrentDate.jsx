@@ -1,5 +1,6 @@
 // components/CurrentDate.jsx
 import { useState, useEffect } from "react";
+import { motion } from "motion/react";
 
 const CurrentDate = () => {
   const [currentDate, setCurrentDate] = useState("");
@@ -16,7 +17,11 @@ const CurrentDate = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <p className="flex">{currentDate}</p>;
+  return (
+    <motion.p initial={{ filter: "blur(4px)", opacity: 0, y: 10 }} animate={{ filter: "blur(0px)", opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 2, ease: "anticipate" }} className="flex">
+      {currentDate}
+    </motion.p>
+  );
 };
 
 export default CurrentDate;

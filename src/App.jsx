@@ -11,11 +11,12 @@ function App() {
   useEffect(() => {
     // simulasi waktu loading, misalnya ambil data awal
     const hasLoaded = localStorage.getItem("hasLoaded");
-    if (!hasLoaded) {
+    const now = Date.now();
+    if (!hasLoaded || now - parseInt(hasLoaded) > 5 * 60 * 1000) {
       const timer = setTimeout(() => {
         setIsLoading(false);
-        localStorage.setItem("hasLoaded", "true");
-      }, 2000);
+        localStorage.setItem("hasLoaded", now);
+      }, 2500);
       return () => clearTimeout(timer);
     } else {
       setIsLoading(false);

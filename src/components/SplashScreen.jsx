@@ -9,12 +9,30 @@ console.warn = (function (origWarn) {
   };
 })(console.warn);
 
-export default function SplashScreen() {
+export default function SplashScreen({ duration = 2000 }) {
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    const hasLoaded = localStorage.getItem("hasLoaded");
+    const now = Date.now();
+    if (hasLoaded && now - parseInt(hasLoaded) < 5 * 60 * 1000) {
+      setProgress(100);
+      return;
+    }
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const percent = Math.min((elapsed / duration) * 100, 100);
+      setProgress(percent);
+      if (percent >= 100) clearInterval(interval);
+    }, 16);
+    return () => clearInterval(interval);
+  }, [duration]);
   return (
     <motion.div className="fixed inset-0 flex items-center justify-center bg-white z-100" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.8 }}>
       <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 2, ease: "easeOut" }} className="text-3xl font-cormorant font-bold">
         <DotLottieReact src="https://lottie.host/b8df5041-4b11-4861-a0c6-3891b3c9cf8a/Lr710NBYmX.lottie" loop autoplay />
-        <div className="flex items-center justify-center">ajoungnarl</div>
+        <div className="flex items-center justify-center">ajoungnarl {Math.round(progress)}%</div>
       </motion.div>
     </motion.div>
   );

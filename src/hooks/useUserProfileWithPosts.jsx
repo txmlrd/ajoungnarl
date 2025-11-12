@@ -111,7 +111,7 @@ export const useUserProfileWithPosts = ({ userSlug, postsPerPage }) => {
 
         if (totalPosts === 0) {
           const totalQuery = query(ref, where("idAuthor", "==", userId));
-          const postTotal = await getDocs(totalQuery);
+          // const postTotal = await getDocs(totalQuery);
           // console.log("postTotal", postTotal);
           
           const getCountFromServer = async (query) => {

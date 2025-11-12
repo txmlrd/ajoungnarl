@@ -1,13 +1,16 @@
-import { User, Clock, Calendar } from "lucide-react";
+import { User, Clock, Calendar, Eye } from "lucide-react";
 import { usePosts } from "../../hooks/usePosts";
 import { Link } from "react-router-dom";
 import { Skeleton } from "antd";
 import PostCategory from "../PostCategory";
 import { useNavigate } from "react-router-dom";
+import Button from "../Button";
 
 const HomePost = () => {
   const { posts, loading } = usePosts();
   const navigate = useNavigate();
+
+  const latestPost = posts.slice(0, 5);
 
   if (loading) {
     return <Skeleton active paragraph={{ rows: 4 }} className="w-full" />;
@@ -15,7 +18,7 @@ const HomePost = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      {posts.map((post) => (
+      {latestPost.map((post) => (
         <div onClick={() => navigate(`/news/${post.id}`)} key={post.id} className="no-underline text-black cursor-pointer">
           <div key={post.id} className="flex lg:flex-row flex-col gap-5 group">
             <div className="rounded-sm outline-1 outline-black lg:h-[150px] h-[250px] lg:w-[200px] w-full flex-shrink-0 overflow-hidden">
@@ -65,11 +68,21 @@ const HomePost = () => {
                     })}
                   </p>
                 </div>
+                <div className="flex flex-row gap-1 items-center">
+                  <Eye />
+                  <p className="text-[14px]">{post?.views}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       ))}
+
+      {latestPost ? (
+        <div className="flex justify-center">
+          <Button text={"View All Posts"} className={"mt-4"} />
+        </div>
+      ) : null}
     </div>
   );
 };

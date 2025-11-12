@@ -9,13 +9,13 @@ import { signOut } from "firebase/auth";
 import { useAlert } from "../context/AlertContext";
 import { Modal, Tooltip } from "antd";
 import Button from "./Button";
-import { useUserProfile } from "../hooks/useUserProfile";
 import { CirclePlus } from "lucide-react";
 import checkUserLogin from "../function/checkUserLogin";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 const Header = () => {
   const navigate = useNavigate();
-  const { profile } = useUserProfile();
+  // const { profile } = useUserProfile();
   // console.log("User Profile in Header:", profile);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useLocalState(null);
@@ -74,9 +74,21 @@ const Header = () => {
             <CurrentDate />
           </div>
           <Link to="/">
-            <h1 className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer">ajoungnarl</h1>
+            <motion.h1
+              initial={{ filter: "blur(4px)", opacity: 0, y: 10 }}
+              animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 1, ease: "anticipate" }}
+              className="font-cormorant text-2xl lg:text-[48px] font-bold cursor-pointer"
+            >
+              ajoungnarl
+            </motion.h1>
           </Link>
-          <div className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex">
+          <motion.div
+            initial={{ filter: "blur(4px)", opacity: 0, y: 10 }}
+            animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 2, ease: "anticipate" }}
+            className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex"
+          >
             {user ? (
               <>
                 <div onClick={() => navigate("/add-post")} className="flex flex-row items-center gap-1 hover:underline transition-all duration-200">
@@ -103,7 +115,7 @@ const Header = () => {
                 Sign out
               </button>
             ) : null}{" "}
-          </div>
+          </motion.div>
 
           <div className="lg:hidden">
             <Hamburger toggled={isMenuOpen} toggle={setIsMenuOpen} />

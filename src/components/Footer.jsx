@@ -2,10 +2,11 @@ import React from "react";
 import { Linkedin } from "lucide-react";
 import { Github } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col items-center justify-center pt-10 ">
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5, ease: "easeInOut" }} className="flex flex-col items-center justify-center pt-10 ">
       <div className=" justify-between w-full py-10 border-y border-gray-300 ">
         <div className="max-w-7xl mx-auto flex lg:flex-row flex-col gap-5 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-1 lg:w-2/3 max-w-7xl mx-auto">
@@ -50,7 +51,7 @@ const Footer = () => {
         </div>
       </div>
       <p className="text-center text-sm text-gray-500 my-10">© 2025 ajoungnarl. All rights reserved.</p>
-    </div>
+    </motion.div>
   );
 };
 
