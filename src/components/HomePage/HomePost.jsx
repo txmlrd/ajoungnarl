@@ -16,7 +16,7 @@ const HomePost = () => {
   return (
     <div className="flex flex-col gap-10">
       {posts.map((post) => (
-        <div onClick={() => navigate(`/news/${post.id}`)} key={post.id} className="no-underline text-black">
+        <div onClick={() => navigate(`/news/${post.id}`)} key={post.id} className="no-underline text-black cursor-pointer">
           <div key={post.id} className="flex lg:flex-row flex-col gap-5 group">
             <div className="rounded-sm outline-1 outline-black lg:h-[150px] h-[250px] lg:w-[200px] w-full flex-shrink-0 overflow-hidden">
               <img

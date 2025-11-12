@@ -12,9 +12,11 @@ import Button from "./Button";
 import { useUserProfile } from "../hooks/useUserProfile";
 import { CirclePlus } from "lucide-react";
 import checkUserLogin from "../function/checkUserLogin";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
+  const navigate = useNavigate();
   const { profile } = useUserProfile();
-  // console.log("User Profile in Header:", profile);  
+  // console.log("User Profile in Header:", profile);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useLocalState(null);
   const { showAlert } = useAlert();
@@ -45,9 +47,8 @@ const Header = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-     
+
     checkUserLogin();
-  
 
     return () => unsubscribe();
   }, []);
@@ -78,11 +79,11 @@ const Header = () => {
           <div className="justify-end lg:justify-center items-center gap-5 w-full hidden lg:flex">
             {user ? (
               <>
-                <a href="/add-post" className="flex flex-row items-center gap-1 hover:underline transition-all duration-200">
+                <div onClick={() => navigate("/add-post")} className="flex flex-row items-center gap-1 hover:underline transition-all duration-200">
                   <Tooltip title="Create Post">
                     <CirclePlus />
                   </Tooltip>
-                </a>
+                </div>
               </>
             ) : null}
             <Link to={user ? "/setting-profile" : "/signin"} className="hover:underline transition-all duration-200">
